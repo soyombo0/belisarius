@@ -1,0 +1,45 @@
+version: "3.9"
+
+name: belisarius
+
+services:
+    app:
+        container_name: app
+        build:
+            context: ./php
+            network: host
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./php/php.ini:/usr/local/etc/php/conf.d/custom.ini
+            - ./../:/var/www
+        working_dir: /var/www
+        networks:
+            - backend
+    nginx:
+        container_name: nginx
+        image: nginx:latest
+        ports:
+            - "80:80"
+        volumes:
+            - ./nginx/conf.d/:/etc/nginx/conf.d
+            - ./../:/var/www
+        networks:
+            - backend
+    db:
+        container_name: db
+        image: postgres:16.2
+        networks:
+            - backend
+        volumes:
+            - ./postgres/data:/var/lib/postgresql/data
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_DB: app
+            POSTGRES_USER: root
+            POSTGRES_PASSWORD: password
+
+networks:
+    backend:
+        name: backend
