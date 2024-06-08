@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function ()  {
     Route::get('/tasks', [\App\Http\Controllers\TaskController::class, 'index'])->name('tasks');
     Route::get('/task/{id}', [\App\Http\Controllers\TaskController::class, 'show'])->name('task');
     Route::post('/tasks', [\App\Http\Controllers\TaskController::class, 'store'])->name('tasks.store');
+    Route::post('/tasks/search', [\App\Http\Controllers\TaskController::class, 'indexByTags'])->name('tasks.search.tags');
     Route::put('/task/{id}', [\App\Http\Controllers\TaskController::class, 'update'])->name('task.update');
     Route::post('/task/{id}/image', [\App\Http\Controllers\TaskController::class, 'uploadImage'])->name('task.image');
     Route::delete('/task/{id}/image', [\App\Http\Controllers\TaskController::class, 'deleteImage'])->name('task.image.delete');

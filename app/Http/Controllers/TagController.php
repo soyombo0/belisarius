@@ -13,9 +13,9 @@ class TagController extends Controller
             'tagName' => ['string', 'required'],
             'task_id' => 'int'
         ]);
+
         $task = Task::find($data['task_id']);
 
-//        dd($data);
         $tag = Tag::query()->create([
             'name' => $data['tagName']
         ]);
@@ -23,7 +23,12 @@ class TagController extends Controller
         $tag->tasks()->attach($task);
         $tag->save();
 
-        return $tag;
+        $tags = $task->tags;
+
+        return view('tasks.index', [
+            'task' => $task,
+            'tags' => $tags
+        ]);
     }
 
     public function destroy(int $id)

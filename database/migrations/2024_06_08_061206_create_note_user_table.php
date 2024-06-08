@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::create('note_user', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('note_id');
+            $table->foreignId('user_id');
             $table->timestamps();
         });
     }

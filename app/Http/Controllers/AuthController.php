@@ -34,7 +34,11 @@ class AuthController extends Controller
 
         auth()->login($user);
 
-        return redirect('/notes');
+        $notes = auth()->user()->notes;
+
+        return view('notes.index', [
+            'notes' => $notes
+        ]);
     }
 
     public function login(Request $request)
@@ -46,16 +50,20 @@ class AuthController extends Controller
 
         $credentials = $request->only('email', 'password');
 
-        auth()->login($credentials);
+        auth()->attempt($credentials);
 
-        return redirect('/notes');
+        $notes = auth()->user()->notes;
+
+        return view('notes.index', [
+            'notes' => $notes
+        ]);
     }
 
     public function logout(Request $request)
     {
         auth()->logout();
 
-        return redirect('/auth');
+        return redirect('/register');
     }
 
 }

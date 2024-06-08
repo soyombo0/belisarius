@@ -1,6 +1,6 @@
 @extends('navbar')
 
-@section('title', 'Auth')
+@section('title', 'Login')
 
 @section('content')
 <head>
@@ -48,6 +48,9 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
+                success: function (data) {
+                    $('body').html(data);
+                }
             });
         });
     });

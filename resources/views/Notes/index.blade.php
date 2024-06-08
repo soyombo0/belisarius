@@ -9,26 +9,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </head>
 
-<div class="d-flex justify-content-center ">
-    <div class="position-absolute bg-light shadow-lg z-3 w-50 bottom-50" style="display: none">
+<div class="d-flex justify-content-center">
+    <div class="position-absolute bg-light shadow-lg p-5 rounded-3 border border-2 z-3 w-50 bottom-50" style="display: none">
         <h3>Create Note</h3>
         <form id="storeNote">
             <input class="note-name-input form-control rounded-3 my-1" type="text" name="noteName" placeholder="Enter note name">
             <button class="btn btn-success my-1">Create Note</button>
         </form>
     </div>
-    <div class="">
-        <h3>Notes:</h3>
-        @foreach($notes as $note)
-            <div class="bg-light rounded-3 row py-2 my-2 text-center">
-                <p class="col-3 ">{{ $note->name }}</p>
-                <a href="/note/{{ $note->id }}" class="edit-note col-3 btn btn-info mx-3">Edit Note</a>
-                <button class="delete-note col-3 btn btn-danger mx-3">Delete Note</button>
-            </div>
-        @endforeach
-    </div>
-    <div class="">
-        <button class="create-note btn btn-success my-1">Add Note</button>
+    <div class="row">
+        <div class="">
+            <h3>Notes:</h3>
+            @foreach($notes as $note)
+                <div class="bg-light rounded-3 row py-2 my-2 text-center">
+                    <p class="col-3 ">{{ $note->name }}</p>
+                    <a href="/note/{{ $note->id }}" class="edit-note col-3 btn btn-primary mx-3">Edit Note</a>
+                    <button class="delete-note col-3 btn btn-danger mx-3">Delete Note</button>
+                </div>
+            @endforeach
+        </div>
+        <div class="">
+            <button class="create-note btn btn-success my-1">Add Note</button>
+        </div>
     </div>
 </div>
 @endsection
@@ -48,6 +50,10 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
+                success: function (data) {
+                    $('body').html(data);
+                    $('.note-name-input').text('');
+                }
             });
             $('.position-absolute').css('display', 'none');
         });
@@ -65,6 +71,9 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
+                success: function (data) {
+                    $('body').html(data);
+                }
             })
         })
         @endisset
