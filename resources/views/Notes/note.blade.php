@@ -7,14 +7,29 @@
 </head>
 
 <h3>Note's name: {{ $note->name }}</h3>
+<button class="share-note btn btn-success my-1">Share Note</button>
 
 <div class="d-flex justify-content-center">
 
-    <div class="position-absolute bg-light shadow-lg p-5 rounded-3 border border-2 z-3 w-50 bottom-50" style="display: none">
+    <div id="addTask" class="position-absolute bg-light shadow-lg p-5 rounded-3 border border-2 z-3 w-50 bottom-50" style="display: none">
         <h3>Create Task</h3>
         <form id="storeTask">
             <input class="store-task col-6 form-control  rounded-3 my-1" type="text" name="taskName" placeholder="enter task's name">
             <button class="col-6 delete-note col-3 btn btn-success my-1" type="submit">Add Task</button>
+        </form>
+    </div>
+
+    <div id="share-note" class="bg-light shadow-lg p-5 rounded-3 position-absolute border border-2 z-3 w-50 bottom-50" style="display: none">
+        <h3>Create Note</h3>
+        <form id="shareNote">
+            <select class="form-select">
+                @foreach($users as $user)
+                    <option name="userId" value="{{ $user->id }}">{{ $user->name }}</option>
+                @endforeach
+            </select>
+            <button type="submit" class="btn btn-success my-2">Share Note</button>
+{{--            <label for="userCanEdit">Allow user to edit</label>--}}
+{{--            <input name="userCanEdit" type="checkbox" id="userCanEdit">--}}
         </form>
     </div>
 
@@ -65,8 +80,29 @@
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
 <script>
     $(document).ready(function() {
+        $('.share-note').on('click', function (e) {
+            $('#share-note').css('display', 'block');
+        });
+        $('#shareNote').on('submit', function(e) {
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route('note.share', $note->id) }}',
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'user_id': $(this).find('select[id="shareUser"]').val(),
+                    'note_id': {{ $note->id }},
+                    'userCanEdit': $(this).find('input[id="userCanEdit"]').val(),
+                },
+                success: function (data) {
+                    $('body').html(data);
+                }
+            })
+        }),
         $('.create-task').on('click', function (e) {
-            $('.position-absolute').css('display', 'block');
+            $('#addTask').css('display', 'block');
         });
         $('.add-tag').on('click', function() {
             var selectedTag = $('#tags-name').val();

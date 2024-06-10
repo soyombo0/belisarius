@@ -35,9 +35,11 @@ class AuthController extends Controller
         auth()->login($user);
 
         $notes = auth()->user()->notes;
+        $users = User::all();
 
         return view('notes.index', [
-            'notes' => $notes
+            'notes' => $notes,
+            'users' => $users
         ]);
     }
 
@@ -53,9 +55,11 @@ class AuthController extends Controller
         auth()->attempt($credentials);
 
         $notes = auth()->user()->notes;
+        $users = User::all();
 
         return view('notes.index', [
-            'notes' => $notes
+            'notes' => $notes,
+            'users' => $users
         ]);
     }
 

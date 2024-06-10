@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Note;
 use App\Models\Tag;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -41,11 +42,13 @@ class TaskController extends Controller
 
         $allTags = Tag::all();
         $tasks = $note->tasks;
+        $users = User::all();
 
         return view('notes.note', [
             'note' => $note,
             'tasks' => $tasks,
-            'allTags' => $allTags
+            'allTags' => $allTags,
+            'users' => $users
         ]);
     }
 
@@ -102,11 +105,13 @@ class TaskController extends Controller
         $note = Note::find($request['note_id']);
         $allTags = Tag::all();
         $tasks = $note->tasks;
+        $users = User::all();
 
         return view('notes.note', [
             'note' => $note,
             'tasks' => $tasks,
-            'allTags' => $allTags
+            'allTags' => $allTags,
+            'users' => $users
         ]);
 
     }
@@ -117,6 +122,7 @@ class TaskController extends Controller
         $tagNames = $request['tagNames'];
         $allTags = Tag::all();
         $taskName = $request['taskNames'];
+        $users = User::all();
 
         if (isset($taskName)) {
             foreach ($tagNames as $tagName) {
@@ -136,7 +142,8 @@ class TaskController extends Controller
         return view('notes.note', [
             'note' => $note,
             'tasks' => $tasks,
-            'allTags' => $allTags
+            'allTags' => $allTags,
+            'users' => $users
         ]);
     }
 

@@ -42,7 +42,6 @@
         });
         $('#storeNote').on('submit', function(e) {
             e.preventDefault();
-            $('.note-name-input').text('');
             $.ajax({
                 url: '{{ route('notes') }}',
                 method: 'POST',
